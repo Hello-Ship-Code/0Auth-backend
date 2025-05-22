@@ -3,7 +3,11 @@ import { Router, type Response, type Express } from 'express'
 import { loginController } from '../controllers/api/login-controller'
 import { signupController } from '../controllers/api/signup-controller'
 import { userController } from '../controllers/api/users-controllers'
-// import { authMiddleware } from '../middlewares/auth-middleware'
+import { authMiddleware } from '../middlewares/auth-middleware'
+import { userDetails } from '../controllers/api/userDetail-controller'
+
+const protectedRoutes = Router()
+protectedRoutes.get('/profile', userDetails)
 
 const apiRouters = Router()
 
@@ -12,7 +16,7 @@ apiRouters.post('/signup', signupController)
 apiRouters.post('/login', loginController)
 
 const appRouter = (app: Express) => {
-  // app.use('/user', authMiddleware, protectedRoutes)
+  app.use('/user', authMiddleware, protectedRoutes)
   app.use('/api', apiRouters)
   app.use((_, response: Response) => {
     response.redirect('/')
