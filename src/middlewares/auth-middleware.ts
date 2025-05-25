@@ -26,6 +26,9 @@ export const authMiddleware: RequestHandler = (req, res, next) => {
 
     next()
   } catch (error) {
-    next(error)
+    const status = error instanceof HttpError ? error.statusCode : 500
+    const message = error instanceof Error ? error.message : 'Authentication failed'
+
+    res.status(status).json({ message })
   }
 }
