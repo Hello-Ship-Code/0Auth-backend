@@ -7,7 +7,8 @@ import { generateAccessToken } from '../../utils/JWT/JWT'
 
 export const refreshTokenController: RequestHandler = async (req, res) => {
   try {
-    const token = req.cookies.refreshToken
+    const token = req.cookies.refreshTokenController
+    console.log(token)
 
     if (!token) res.status(401).json({ message: ' No Refresh token found' })
 
@@ -30,7 +31,7 @@ export const refreshTokenController: RequestHandler = async (req, res) => {
       userName: decoded.userName,
     })
 
-    res.status(200).json({ access_token })
+    res.status(200).json({ access_token, data: 'test' })
   } catch (error) {
     const status = error instanceof HttpError ? error.statusCode : 500
     const message = error instanceof Error ? error.message : 'Something went wrong'
