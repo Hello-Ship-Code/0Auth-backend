@@ -1,11 +1,11 @@
 import type { Request, RequestHandler, Response } from 'express'
 
 import HttpError from '../../utils/HttpError'
-import { userLoginTypes } from '../../utils/user/user-types'
-import { userLogin } from '../services/user-login'
+import { userLoginTypes } from '../../utils/user/user.types'
+import { userLogin } from '../services/login.service'
 import { generateAccessToken, generateRefreshToken } from '../../utils/JWT/JWT'
 import { env } from '../../config/env.config'
-import { updateRefreshToken } from '../services/update-refresh-token'
+import { updateRefreshToken } from '../services/updateRefreshToken.service'
 
 export const loginController: RequestHandler = async (req: Request, res: Response) => {
   try {

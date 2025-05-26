@@ -2,7 +2,7 @@ import type { RequestHandler } from 'express'
 import HttpError from '../../utils/HttpError'
 import jwt from 'jsonwebtoken'
 import { env } from '../../config/env.config'
-import { findUserById } from '../services/find-user'
+import { findUserById } from '../services/findUser.service'
 import { generateAccessToken } from '../../utils/JWT/JWT'
 
 export const refreshTokenController: RequestHandler = async (req, res) => {

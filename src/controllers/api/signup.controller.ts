@@ -1,15 +1,15 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { ZodError } from 'zod'
 
-import { userValidation } from '../../validation/user/user-validation'
+import { userValidation } from '../../validation/user/userValidation'
 
 import HttpError from '../../utils/HttpError'
-import { userSignupTypes } from '../../utils/user/user-types'
-import { userSignup } from '../services/user-signup'
+import { userSignupTypes } from '../../utils/user/user.types'
+import { userSignup } from '../services/signup.service'
 import { generateAccessToken, generateRefreshToken } from '../../utils/JWT/JWT'
 
 import { env } from '../../config/env.config'
-import { updateRefreshToken } from '../services/update-refresh-token'
+import { updateRefreshToken } from '../services/updateRefreshToken.service'
 
 export const signupController: RequestHandler = async (req: Request, res: Response) => {
   try {

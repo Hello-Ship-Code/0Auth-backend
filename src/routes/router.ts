@@ -2,10 +2,10 @@
 import { Router, type Response, type Express } from 'express'
 import { loginController } from '../controllers/api/login.controller'
 import { signupController } from '../controllers/api/signup.controller'
-import { userController } from '../controllers/api/users-controllers'
-import { authMiddleware } from '../middlewares/auth-middleware'
-import { userDetails } from '../controllers/api/userDetail-controller'
-import { refreshTokenController } from '../controllers/api/refresh-token.controller'
+import { userController } from '../controllers/api/users.controllers'
+import { authMiddleware } from '../middlewares/auth.middleware'
+import { userDetails } from '../controllers/api/userDetails.controller'
+import { refreshTokenController } from '../controllers/api/refreshToken.controller'
 //  import { googleRouter } from './google.router'
 
 const protectedRoutes = Router()

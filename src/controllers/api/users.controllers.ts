@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 
 import HttpError from '../../utils/HttpError'
-import { getUsers } from '../services/get-users'
+import { getUsers } from '../services/getUsers.service'
 
 export const userController: RequestHandler = async (_req, res) => {
   try {

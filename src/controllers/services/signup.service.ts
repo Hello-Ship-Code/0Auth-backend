@@ -1,8 +1,8 @@
 import { prisma } from '../../config/db.config'
 
 import HttpError from '../../utils/HttpError'
-import { hashPassword } from '../../utils/user/password-hashing'
-import { userSignupTypes } from '../../utils/user/user-types'
+import { hashPassword } from '../../utils/user/passwordHashing'
+import { userSignupTypes } from '../../utils/user/user.types'
 
 export const userSignup = async (userData: userSignupTypes) => {
   try {
