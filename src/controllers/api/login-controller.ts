@@ -1,9 +1,10 @@
 import type { Request, RequestHandler, Response } from 'express'
 
 import HttpError from '../../utils/HttpError'
-import { setUser } from '../../utils/JWT/auth'
+// import { generateAccessToken, generateRefreshToken } from '../../utils/JWT/JWT'
 import { userLoginTypes } from '../../utils/user/user-types'
 import { userLogin } from '../services/user-login'
+import { generateAccessToken, generateRefreshToken } from '../../utils/JWT/JWT'
 
 export const loginController: RequestHandler = async (req: Request, res: Response) => {
   try {
@@ -26,20 +27,19 @@ export const loginController: RequestHandler = async (req: Request, res: Respons
       return
     }
 
-    // res.cookie('userToken', setUser(user))
-    const token = setUser(user)
+    const access_token = generateAccessToken(user)
+    const refresh_token = generateRefreshToken(user)
 
-    res.setHeader('Authorization', `bearer ${token}`)
+    user.refreshToken = refresh_token
 
-    res.status(200).json({
-      message: 'Login successful',
-      token,
-      user: {
-        id: user.id,
-        email: user.email,
-        userName: user.userName,
-      },
+    res.cookie('refreshToken', refresh_token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     })
+
+    res.status(200).json({ access_token })
   } catch (error) {
     const status = error instanceof HttpError ? error.statusCode : 500
     const message = error instanceof Error ? error.message : 'Something went wrong'

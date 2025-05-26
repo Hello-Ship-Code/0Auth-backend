@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express'
 import passport from 'passport'
 import { env } from '../config/env.config'
-import { setUser } from '../utils/JWT/auth'
+import { setUser } from '../utils/JWT/JWT'
 
 const googleRouter = Router()
 

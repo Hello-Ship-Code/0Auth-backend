@@ -15,10 +15,16 @@ export const userLogin = async (userData: userLoginTypes) => {
         email: true,
         userName: true,
         password: true,
+        refreshToken: true,
       },
     })
 
-    if (!user || !(await verifyPassword(userData.password, user.password))) {
+    if (
+      !user ||
+      !user.password ||
+      !userData.password ||
+      !(await verifyPassword(userData.password, user.password))
+    ) {
       throw new HttpError('Invalid email or password', 401)
     }
 
