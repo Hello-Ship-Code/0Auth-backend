@@ -13,6 +13,8 @@ export const signupController: RequestHandler = async (req: Request, res: Respon
   try {
     const { email, userName, password } = userValidation.parse(req.body as userSignupTypes)
 
+    console.log(email, userName, password)
+
     const user = await userSignup({ email, userName, password })
 
     const access_token = generateAccessToken(user)

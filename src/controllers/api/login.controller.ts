@@ -1,7 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
 
 import HttpError from '../../utils/HttpError'
-// import { generateAccessToken, generateRefreshToken } from '../../utils/JWT/JWT'
 import { userLoginTypes } from '../../utils/user/user-types'
 import { userLogin } from '../services/user-login'
 import { generateAccessToken, generateRefreshToken } from '../../utils/JWT/JWT'
@@ -9,6 +8,8 @@ import { generateAccessToken, generateRefreshToken } from '../../utils/JWT/JWT'
 export const loginController: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body as userLoginTypes
+
+    console.log(email, password)
 
     if (!email || !password) {
       const missingFields = []
@@ -18,6 +19,7 @@ export const loginController: RequestHandler = async (req: Request, res: Respons
       res.status(400).json({
         message: `${missingFields.join(' and ')} ${missingFields.length > 1 ? 'are' : 'is'} required`,
       })
+      return
     }
 
     const user = await userLogin({ email, password })
