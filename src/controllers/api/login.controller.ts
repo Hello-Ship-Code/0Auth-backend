@@ -4,12 +4,12 @@ import HttpError from '../../utils/HttpError'
 import { userLoginTypes } from '../../utils/user/user-types'
 import { userLogin } from '../services/user-login'
 import { generateAccessToken, generateRefreshToken } from '../../utils/JWT/JWT'
+import { env } from '../../config/env.config'
+import { updateRefreshToken } from '../services/update-refresh-token'
 
 export const loginController: RequestHandler = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body as userLoginTypes
-
-    console.log(email, password)
 
     if (!email || !password) {
       const missingFields = []
@@ -34,14 +34,16 @@ export const loginController: RequestHandler = async (req: Request, res: Respons
 
     user.refreshToken = refresh_token
 
+    updateRefreshToken(refresh_token, user.id)
+
     res.cookie('refreshToken', refresh_token, {
       httpOnly: true,
-      secure: true,
+      secure: env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
 
-    res.status(200).json({ access_token })
+    res.status(200).json({ access_token: access_token })
   } catch (error) {
     const status = error instanceof HttpError ? error.statusCode : 500
     const message = error instanceof Error ? error.message : 'Something went wrong'
