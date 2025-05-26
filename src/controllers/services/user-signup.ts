@@ -15,6 +15,7 @@ export const userSignup = async (userData: userSignupTypes) => {
         email: userData.email,
         userName: userData.userName,
         password: hashedPassword,
+        refreshToken: '',
       },
     })
   } catch (error) {
