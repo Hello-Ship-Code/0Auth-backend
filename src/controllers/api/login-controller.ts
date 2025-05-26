@@ -17,6 +17,7 @@ export const loginController: RequestHandler = async (req: Request, res: Respons
       res.status(400).json({
         message: `${missingFields.join(' and ')} ${missingFields.length > 1 ? 'are' : 'is'} required`,
       })
+      return
     }
 
     const user = await userLogin({ email, password })
