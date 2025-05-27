@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
 import { env } from '../../config/env.config'
-import { IPasswordHasher } from '../interface/IPasswordHasher'
+import { IPasswordService } from '../../domain/interface/IPasswordService'
 
-export class PasswordService implements IPasswordHasher {
+export class PasswordService implements IPasswordService {
   async hash(password: string): Promise<string> {
     return bcrypt.hash(password, env.SALTROUNDS)
   }
