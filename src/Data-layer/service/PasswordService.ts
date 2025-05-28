@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { env } from '../../config/env.config'
-import { IPasswordService } from '../../domain/interface/IPasswordService'
+import { IPasswordService } from '../../domain/service/IPasswordService'
 
 export class PasswordService implements IPasswordService {
   async hash(password: string): Promise<string> {

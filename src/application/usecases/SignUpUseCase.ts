@@ -1,5 +1,5 @@
 import { IUserRepository } from '../../domain/interface/IUserRepository'
-import { IPasswordService } from '../../domain/interface/IPasswordService'
+import { IPasswordService } from '../../domain/service/IPasswordService'
 
 export class SignUpUseCase {
   constructor(
