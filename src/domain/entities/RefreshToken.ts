@@ -1,5 +1,6 @@
 export class RefreshToken {
   constructor(
+    public readonly id: string | undefined,
     public readonly userId: string,
     public _refreshToken: string,
     public readonly createdAt: Date = new Date(),
