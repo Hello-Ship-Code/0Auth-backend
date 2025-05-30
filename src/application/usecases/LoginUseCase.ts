@@ -1,11 +1,8 @@
 import { IUserRepository } from '../../domain/interface/IUserRepository'
 import { IPasswordService } from '../../domain/service/IPasswordService'
 import { ITokenService } from '../../domain/service/ITokenService'
-
-export interface LoginDTO {
-  email: string
-  password: string
-}
+import { AuthTokenDTO } from '../DTO/AuthTokenDTO'
+import { LoginDTO } from '../DTO/LoginDTO'
 
 export class LoginUseCase {
   constructor(
@@ -14,18 +11,16 @@ export class LoginUseCase {
     private readonly tokenService: ITokenService,
   ) {}
 
-  async execute({
-    email,
-    password,
-  }: LoginDTO): Promise<{ accessToken: string; refreshToken: string }> {
+  async execute({ email, password }: LoginDTO): Promise<AuthTokenDTO> {
     const user = await this.userRepo.findUserByEmail(email)
     if (!user) throw new Error('User not found')
 
     const isMatch = await this.passwordService.compare(password, user.getPassword())
     if (!isMatch) throw new Error('Invalid password')
 
+    if (!user.id) throw new Error('User ID is missing')
     const accessToken = this.tokenService.generateAccessToken({ userId: user.id })
-    const refreshToken = this.tokenService.generateRefreshToken(user.id!)
+    const refreshToken = this.tokenService.generateRefreshToken(user.id)
 
     return {
       accessToken,

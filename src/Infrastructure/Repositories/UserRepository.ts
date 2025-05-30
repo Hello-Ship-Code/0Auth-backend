@@ -30,24 +30,24 @@ export class UserRepository implements IUserRepository {
     return new User(userRecord.id, userRecord.email, userRecord.userName, userRecord.password)
   }
 
-  async update(user: User): Promise<User> {
-    const updated = await prisma.user.update({
-      where: { id: user.id! },
-      data: {
-        email: user.getEmail(),
-        userName: user.getUsername(),
-        password: user.getPassword(),
-      },
-    })
-    return new User(updated.id, updated.email, updated.userName, updated.password)
-  }
+  // async update(user: User): Promise<User> {
+  //   const updated = await prisma.user.update({
+  //     where: { id: user.id! },
+  //     data: {
+  //       email: user.getEmail(),
+  //       userName: user.getUsername(),
+  //       password: user.getPassword(),
+  //     },
+  //   })
+  //   return new User(updated.id, updated.email, updated.userName, updated.password)
+  // }
 
-  async delete(id: string): Promise<void> {
-    await prisma.user.delete({ where: { id } })
-  }
+  // async delete(id: string): Promise<void> {
+  //   await prisma.user.delete({ where: { id } })
+  // }
 
   async getAllUsers(): Promise<User[]> {
     const users = await prisma.user.findMany()
-    return (await users).map((user) => new User(user.id, user.email, user.userName, user.password))
+    return users.map((user) => new User(user.id, user.email, user.userName, user.password))
   }
 }

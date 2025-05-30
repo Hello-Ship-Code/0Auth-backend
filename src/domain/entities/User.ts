@@ -32,12 +32,12 @@ export class User {
     return this.userName
   }
 
-  getPublicProfile(): Readonly<{ email: string; userName: string }> {
-    return Object.freeze({
-      email: this.email,
-      userName: this.userName,
-    })
-  }
+  // getPublicProfile(): Readonly<{ email: string; userName: string }> {
+  //   return Object.freeze({
+  //     email: this.email,
+  //     userName: this.userName,
+  //   })
+  // }
 
   async verifyPassword(inputPassword: string, passwordService: IPasswordService): Promise<boolean> {
     return passwordService.compare(inputPassword, this._password)

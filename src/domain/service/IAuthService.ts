@@ -1,9 +1,7 @@
+import { AuthTokenDTO, RegisterRequestDTO } from '../../application/DTO/AuthTokenDTO'
+
 export interface IAuthService {
-  login(email: string, password: string): Promise<{ accessToken: string; refreshToken: string }>
-  register(userData: {
-    email: string
-    userName: string
-    password: string
-  }): Promise<{ refreshToken: string; accessToken: string }>
-  refreshToken(refreshToken: string): Promise<{ refreshToken: string; accessToken: string }>
+  login(email: string, password: string): Promise<AuthTokenDTO>
+  register(userData: RegisterRequestDTO): Promise<AuthTokenDTO>
+  refreshToken(refreshToken: string): Promise<AuthTokenDTO>
 }

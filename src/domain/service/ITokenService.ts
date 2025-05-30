@@ -1,7 +1,7 @@
 export interface ITokenService {
-  generateAccessToken(payload: object): string
+  generateAccessToken(payload: { userId: string }): string
   verifyAccessToken(token: string): object | null
 
-  generateRefreshToken(userId: string): string
-  verifyRefreshToken(token: string, userId: string): object | null | string
+  generateRefreshToken(payload: { userId: string }): string
+  verifyRefreshToken(token: string): { userId: string } | null | string
 }

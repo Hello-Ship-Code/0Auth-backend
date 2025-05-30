@@ -1,9 +1,9 @@
 import { RefreshToken } from '../entities/RefreshToken'
 
 export interface IRefreshTokenRepository {
-  create(token: RefreshToken): Promise<RefreshToken>
-  findUserById(userId: string): Promise<RefreshToken[]>
+  createToken(token: RefreshToken): Promise<RefreshToken>
+  findTokenByUserId(userId: string): Promise<RefreshToken[]>
   findByToken(token: string): Promise<RefreshToken | null>
-  deleteByToken(token: string): Promise<void>
-  deleteAllForUser(userId: string): Promise<void>
+  deleteToken(token: string): Promise<void>
+  // deleteAllForUser(userId: string): Promise<void>
 }
