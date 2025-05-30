@@ -1,4 +1,4 @@
-import { prisma } from '../../config/db.config'
+import { prisma } from '../../Infrastructure/config/db.config'
 
 export const updateRefreshToken = async (token: string, userId: string) => {
   return await prisma.user.update({

@@ -1,4 +1,4 @@
-import { prisma } from '../../config/db.config'
+import { prisma } from '../../Infrastructure/config/db.config'
 
 import HttpError from '../../utils/HttpError'
 

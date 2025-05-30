@@ -1,4 +1,4 @@
-import { prisma } from '../../config/db.config'
+import { prisma } from '../config/db.config'
 import { RefreshToken } from '../../domain/entities/RefreshToken'
 import { IRefreshTokenRepository } from '../../domain/interface/IRefreshTokenRepository'
 

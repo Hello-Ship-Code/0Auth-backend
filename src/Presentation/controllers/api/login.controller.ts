@@ -4,7 +4,7 @@ import HttpError from '../../utils/HttpError'
 import { userLoginTypes } from '../../utils/user/user.types'
 import { userLogin } from '../services/login.service'
 import { generateAccessToken, generateRefreshToken } from '../../utils/JWT/JWT'
-import { env } from '../../config/env.config'
+import { env } from '../../Infrastructure/config/env.config'
 import { updateRefreshToken } from '../services/updateRefreshToken.service'
 
 export const loginController: RequestHandler = async (req: Request, res: Response) => {

@@ -1,5 +1,5 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { prisma } from '../../config/db.config'
+import { prisma } from '../../Infrastructure/config/db.config'
 import HttpError from '../../utils/HttpError'
 
 export const userDetails: RequestHandler = async (_req: Request, res: Response) => {

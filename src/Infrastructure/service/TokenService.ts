@@ -1,4 +1,4 @@
-import { env } from '../../config/env.config'
+import { env } from '../config/env.config'
 import { ITokenService } from '../../domain/service/ITokenService'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
@@ -19,15 +19,15 @@ export class TokenService implements ITokenService {
     }
   }
 
-  generateRefreshToken(userId: string): string {
-    return jwt.sign({ userId }, env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
+  generateRefreshToken(payload: { userId: string }): string {
+    return jwt.sign(payload, env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
   }
 
-  verifyRefreshToken(token: string, userId: string): object | null | string {
+  verifyRefreshToken(token: string): { userId: string } | null {
     try {
-      const decoded = jwt.verify(token, env.REFRESH_TOKEN_SECRET)
-      if (typeof decoded === 'object' && decoded !== null && 'userId' in decoded) {
-        return (decoded as JwtPayload).userId === userId ? decoded : 'user-mismatch'
+      const decoded = jwt.verify(token, env.REFRESH_TOKEN_SECRET) as JwtPayload
+      if (decoded && typeof decoded === 'object' && 'userId' in decoded) {
+        return { userId: decoded.userId as string }
       }
       return null
     } catch {

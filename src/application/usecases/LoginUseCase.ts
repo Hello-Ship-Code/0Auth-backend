@@ -20,7 +20,7 @@ export class LoginUseCase {
 
     if (!user.id) throw new Error('User ID is missing')
     const accessToken = this.tokenService.generateAccessToken({ userId: user.id })
-    const refreshToken = this.tokenService.generateRefreshToken(user.id)
+    const refreshToken = this.tokenService.generateRefreshToken({ userId: user.id })
 
     return {
       accessToken,

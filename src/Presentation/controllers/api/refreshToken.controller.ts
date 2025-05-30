@@ -1,7 +1,7 @@
 import type { RequestHandler } from 'express'
 import HttpError from '../../utils/HttpError'
 import jwt from 'jsonwebtoken'
-import { env } from '../../config/env.config'
+import { env } from '../../Infrastructure/config/env.config'
 import { findUserById } from '../services/findUser.service'
 import { generateAccessToken } from '../../utils/JWT/JWT'
 

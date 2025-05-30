@@ -1,6 +1,5 @@
-import { env } from '../../config/env.config'
-
 import jwt from 'jsonwebtoken'
+import { env } from '../../Infrastructure/config/env.config'
 
 export const generateAccessToken = (payload: object) => {
   return jwt.sign(payload, env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' })

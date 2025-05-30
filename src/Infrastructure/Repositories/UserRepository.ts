@@ -1,4 +1,4 @@
-import { prisma } from '../../config/db.config'
+import { prisma } from '../config/db.config'
 import { User } from '../../domain/entities/User'
 import { IUserRepository } from '../../domain/interface/IUserRepository'
 
