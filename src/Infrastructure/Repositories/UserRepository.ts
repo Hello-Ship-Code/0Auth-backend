@@ -21,13 +21,17 @@ export class UserRepository implements IUserRepository {
       },
     })
     if (!userRecord) return null
-    return new User(userRecord.id, userRecord.email, userRecord.userName, userRecord.password)
+    return userRecord
+      ? new User(userRecord.id, userRecord.email, userRecord.userName, userRecord.password)
+      : null
   }
 
   async findUserById(id: string): Promise<User | null> {
     const userRecord = await prisma.user.findUnique({ where: { id } })
     if (!userRecord) return null
-    return new User(userRecord.id, userRecord.email, userRecord.userName, userRecord.password)
+    return userRecord
+      ? new User(userRecord.id, userRecord.email, userRecord.userName, userRecord.password)
+      : null
   }
 
   // async update(user: User): Promise<User> {

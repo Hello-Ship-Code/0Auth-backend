@@ -1,7 +1,7 @@
 // src/infrastructure/http/middleware/authMiddleware.ts
 import { RequestHandler } from 'express'
 import { ITokenService } from '../../../domain/service/ITokenService'
-import HttpError from '../../../utils/HttpError'
+import HttpError from './HttpError'
 
 export const authMiddleware = (tokenService: ITokenService): RequestHandler => {
   return (req, res, next) => {

@@ -3,7 +3,7 @@ import { RefreshToken } from '../../domain/entities/RefreshToken'
 import { IRefreshTokenRepository } from '../../domain/interface/IRefreshTokenRepository'
 
 export class RefreshTokenRepository implements IRefreshTokenRepository {
-  async create(token: RefreshToken): Promise<RefreshToken> {
+  async createToken(token: RefreshToken): Promise<RefreshToken> {
     const created = await prisma.refreshToken.create({
       data: {
         userId: token.userId,
@@ -22,7 +22,7 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
     )
   }
 
-  async findUserById(userId: string): Promise<RefreshToken[]> {
+  async findTokenByUserId(userId: string): Promise<RefreshToken[]> {
     const tokens = await prisma.refreshToken.findMany({ where: { userId } })
 
     return tokens.map(
@@ -38,8 +38,6 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
   }
 
   async findByToken(token: string): Promise<RefreshToken | null> {
-    // const userToken = await prisma.refreshToken.findUnique({ where: { refreshToken: token } })
-
     const userToken = await prisma.refreshToken.findUnique({ where: { refreshToken: token } })
 
     if (!userToken) return null
@@ -52,11 +50,11 @@ export class RefreshTokenRepository implements IRefreshTokenRepository {
     )
   }
 
-  async deleteByToken(token: string): Promise<void> {
+  async deleteToken(token: string): Promise<void> {
     await prisma.refreshToken.delete({ where: { refreshToken: token } })
   }
 
-  async deleteAllForUser(userId: string): Promise<void> {
-    await prisma.refreshToken.deleteMany({ where: { userId } })
-  }
+  // async deleteAllForUser(userId: string): Promise<void> {
+  //   await prisma.refreshToken.deleteMany({ where: { userId } })
+  // }
 }
