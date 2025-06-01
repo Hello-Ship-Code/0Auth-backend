@@ -1,11 +1,11 @@
 // src/routes/app-router.ts
 import { Router, type Response, type Express } from 'express'
-import { loginController } from '../controllers/api/login.controller'
-import { signupController } from '../controllers/api/signup.controller'
-import { userController } from '../controllers/api/users.controllers'
+import { loginController } from '../controllers/login.controller'
+import { signupController } from '../controllers/signup.controller'
+import { userController } from '../controllers/users.controllers'
 import { authMiddleware } from '../../Infrastructure/Http/middlewares/auth.middleware'
-import { userDetails } from '../controllers/api/userDetails.controller'
-import { refreshTokenController } from '../controllers/api/refreshToken.controller'
+import { userDetails } from '../controllers/userDetails.controller'
+import { refreshHandler } from '../wiring/refreshToken.controller.wiring'
 //  import { googleRouter } from './google.router'
 
 const protectedRoutes = Router()
@@ -13,7 +13,7 @@ protectedRoutes.get('/profile', userDetails)
 
 const apiRouters = Router()
 apiRouters.get('/users', userController)
-apiRouters.post('/refresh-token', refreshTokenController)
+apiRouters.post('/refresh-token', refreshHandler)
 apiRouters.post('/signup', signupController)
 apiRouters.post('/login', loginController)
 
