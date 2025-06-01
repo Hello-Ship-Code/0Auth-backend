@@ -2,20 +2,20 @@
 
 An **interface** is a programming concept that defines a **contract** specifying the methods and properties an object or class must implement — without providing the implementation itself.
 
-* It defines **what** functions/properties are available.
-* It **does not** define **how** those functions work.
-* Helps enforce **structure** and **consistency** across different implementations.
-* Promotes **decoupling** by allowing code to depend on abstractions rather than concrete implementations.
-* Makes code more **maintainable**, **testable**, and **flexible**.
+- It defines **what** functions/properties are available.
+- It **does not** define **how** those functions work.
+- Helps enforce **structure** and **consistency** across different implementations.
+- Promotes **decoupling** by allowing code to depend on abstractions rather than concrete implementations.
+- Makes code more **maintainable**, **testable**, and **flexible**.
 
 ---
 
 ## Why Use Interfaces?
 
-* To **standardize behavior** across different classes or modules.
-* To enable **interchangeability** of implementations.
-* To support the **dependency inversion principle** in clean architecture.
-* To facilitate **mocking** in unit testing.
+- To **standardize behavior** across different classes or modules.
+- To enable **interchangeability** of implementations.
+- To support the **dependency inversion principle** in clean architecture.
+- To facilitate **mocking** in unit testing.
 
 ---
 
@@ -27,9 +27,9 @@ Defines user-related database operations.
 
 ```ts
 interface IUserRepository {
-  createUser(user: User): Promise<User>;
-  findUserByEmail(email: string): Promise<User | null>;
-  updateUser(user: User): Promise<User>;
+  createUser(user: User): Promise<User>
+  findUserByEmail(email: string): Promise<User | null>
+  updateUser(user: User): Promise<User>
 }
 ```
 
@@ -41,9 +41,9 @@ Defines methods for managing refresh tokens.
 
 ```ts
 interface IRefreshTokenRepository {
-  saveToken(userId: string, refreshToken: string): Promise<void>;
-  findToken(token: string): Promise<string | null>;
-  revokeToken(token: string): Promise<void>;
+  saveToken(userId: string, refreshToken: string): Promise<void>
+  findToken(token: string): Promise<string | null>
+  revokeToken(token: string): Promise<void>
 }
 ```
 
@@ -55,10 +55,10 @@ Handles token creation and verification.
 
 ```ts
 interface ITokenService {
-  generateAccessToken(payload: any): Promise<string>;
-  generateRefreshToken(payload: any): Promise<string>;
-  verifyAccessToken(token: string): Promise<any | null>;
-  verifyRefreshToken(token: string): Promise<any | null>;
+  generateAccessToken(payload: any): Promise<string>
+  generateRefreshToken(payload: any): Promise<string>
+  verifyAccessToken(token: string): Promise<any | null>
+  verifyRefreshToken(token: string): Promise<any | null>
 }
 ```
 
@@ -70,8 +70,8 @@ Abstracts password hashing logic.
 
 ```ts
 interface IPasswordHasher {
-  hash(password: string): Promise<string>;
-  compare(password: string, hashed: string): Promise<boolean>;
+  hash(password: string): Promise<string>
+  compare(password: string, hashed: string): Promise<boolean>
 }
 ```
 
@@ -83,6 +83,6 @@ A geometric example to calculate area.
 
 ```ts
 interface Shape {
-  getArea(): number;
+  getArea(): number
 }
 ```

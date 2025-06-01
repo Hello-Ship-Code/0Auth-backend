@@ -1,9 +1,9 @@
 import { User } from '../../domain/entities/User'
-import { IUserRepository } from '../../domain/interface/IUserRepository'
-import { IPasswordService } from '../../domain/service/IPasswordService'
-import { ITokenService } from '../../domain/service/ITokenService'
-import { AuthTokenDTO } from '../DTO/AuthTokenDTO'
-import { SignupDTO } from '../DTO/SignUpDTO'
+import type { IUserRepository } from '../../domain/interface/IUserRepository'
+import type { IPasswordService } from '../../domain/service/IPasswordService'
+import type { ITokenService } from '../../domain/service/ITokenService'
+import type { AuthTokenDTO } from '../DTO/AuthTokenDTO'
+import { type SignupDTO } from '../DTO/SignUpDTO'
 
 export class SignUpUseCase {
   constructor(
