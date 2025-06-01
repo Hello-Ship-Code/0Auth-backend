@@ -7,7 +7,8 @@ export const getUserDetailsController = (
 ): RequestHandler => {
   return async (_req: Request, res: Response) => {
     try {
-      const userId = res.locals.user?.id
+      const userId = res.locals.user?.userId
+
       if (!userId) throw new HttpError('unauthorized: missing Id', 401)
 
       const user = await getUserProfileUseCase.execute(userId)
