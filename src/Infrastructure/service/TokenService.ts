@@ -1,4 +1,4 @@
-import { env } from '../config/env.config'
+import { env } from '../Http/config/env.config'
 import { ITokenService } from '../../domain/service/ITokenService'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 

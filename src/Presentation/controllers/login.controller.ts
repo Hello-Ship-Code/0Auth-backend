@@ -1,6 +1,6 @@
 import type { Request, Response, RequestHandler } from 'express'
 import { LoginDTO } from '../../application/DTO/LoginDTO'
-import { env } from '../../Infrastructure/config/env.config'
+import { env } from '../../Infrastructure/Http/config/env.config'
 import { LoginUseCase } from '../../application/usecases/LoginUseCase'
 import HttpError from '../../Infrastructure/Http/middlewares/HttpError'
 

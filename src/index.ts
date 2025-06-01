@@ -3,9 +3,9 @@ import cors from 'cors'
 import passport from 'passport'
 import cookieParser from 'cookie-parser'
 
-import { env } from './Infrastructure/config/env.config'
+import { env } from './Infrastructure/Http/config/env.config'
 import { appRouter } from './Presentation/routes/router'
-import './Infrastructure/config/passport.google'
+import './Infrastructure/Http/config/passport.google'
 
 const app = express()
 

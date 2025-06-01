@@ -1,7 +1,7 @@
 import type { Request, Response, RequestHandler } from 'express'
 import { SignUpUseCase } from '../../application/usecases/SignUpUseCase'
 import { userValidation } from '../../application/Validation/user/userValidation'
-import { env } from '../../Infrastructure/config/env.config'
+import { env } from '../../Infrastructure/Http/config/env.config'
 import { ZodError } from 'zod'
 import HttpError from '../../Infrastructure/Http/middlewares/HttpError'
 

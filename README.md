@@ -1,213 +1,131 @@
-# Clean Architecture
+# OAuth-backend
 
-Uncle Bob’s **Clean Architecture** is a set of principles for organizing code in a way that makes it **maintainable**, **testable**, and **independent of frameworks, databases, or external agencies**. The idea is to **separate concerns** and structure the code into **layers**, where inner layers are completely unaware of the outer layers.
+This project is a robust, modular backend implementation for authentication using **OAuth 2.0**, structured with **Uncle Bob’s Clean Architecture** principles.
+
+## 🔍 Overview
+
+The goal of this backend is to provide a **scalable**, **testable**, and **framework-agnostic** authentication system with support for:
+
+- ✅ Google OAuth 2.0 Authentication
+- ✅ JWT-based session management (Access & Refresh Tokens)
+- ✅ Type-safe, validated inputs using Zod
+- ✅ Express.js REST API
+- ✅ Prisma ORM for database operations
+- ✅ Cleanly separated layers for long-term maintainability
 
 ---
 
-## 🧱 Clean Architecture Layers (from innermost to outermost)
+## 🧱 Clean Architecture Layers
 
 ```c
+
 ┌───────────────────────────┐
-│        Frameworks         │ ← e.g., Express, React, Prisma, etc.
+│        Frameworks         │ ← Express, Prisma, Passport
 │     & Drivers Layer       │
 ├───────────────────────────┤
-│   Interface Adapters      │ ← Controllers, Repositories (implements interfaces)
+│   Interface Adapters      │ ← Controllers, Repositories
 ├───────────────────────────┤
-│     Application Layer     │ ← Use Cases / Services
+│     Application Layer     │ ← Use Cases, DTOs
 ├───────────────────────────┤
-│     Domain Layer          │ ← Entities, Business Rules (pure logic)
+│       Domain Layer        │ ← Core Business Logic, Entities
 └───────────────────────────┘
+
 ```
 
 ---
 
-## 🛠️ What to Do in Code (with TypeScript + Express + Prisma Example)
+## 📂 Folder Structure
 
-We’ll walk through a simple example: **"Create a user"** flow.
-
----
-
-## 1. **Domain Layer** (`/domain`)
-
-- Focus: **Business entities** and **business rules**
-- No imports from any other layer
-
-### 📄 `User.ts`
-
-```ts
-export class User {
-  constructor(
-    public readonly id: string,
-    public name: string,
-    public email: string,
-  ) {
-    if (!email.includes('@')) throw new Error('Invalid email')
-  }
-}
-```
-
----
-
-## 2. **Application Layer** (`/application`)
-
-- Focus: **Use cases** and **interfaces**
-- Talks to domain layer and defines **ports** (interfaces) for outside world
-
-### 📄 `IUserRepository.ts`
-
-```ts
-import { User } from '../../domain/User'
-
-export interface IUserRepository {
-  create(user: User): Promise<User>
-  findByEmail(email: string): Promise<User | null>
-}
-```
-
-### 📄 `CreateUserUseCase.ts`
-
-```ts
-import { IUserRepository } from './IUserRepository'
-import { User } from '../../domain/User'
-import { v4 as uuidv4 } from 'uuid'
-
-export class CreateUserUseCase {
-  constructor(private userRepository: IUserRepository) {}
-
-  async execute(name: string, email: string): Promise<User> {
-    const existing = await this.userRepository.findByEmail(email)
-    if (existing) throw new Error('User already exists')
-
-    const user = new User(uuidv4(), name, email)
-    return this.userRepository.create(user)
-  }
-}
-```
-
----
-
-## 3. **Interface Adapters** (`/infrastructure`, `/controllers`)
-
-- Implements interfaces from the application layer
-- Converts framework data (e.g., Prisma/DB models) to domain models and vice versa
-
-### 📄 `PrismaUserRepository.ts`
-
-```ts
-import { IUserRepository } from '../../application/IUserRepository'
-import { User } from '../../domain/User'
-import { prisma } from '../prisma' // Your Prisma client
-
-export class PrismaUserRepository implements IUserRepository {
-  async create(user: User): Promise<User> {
-    await prisma.user.create({
-      data: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-      },
-    })
-    return user
-  }
-
-  async findByEmail(email: string): Promise<User | null> {
-    const userData = await prisma.user.findUnique({ where: { email } })
-    if (!userData) return null
-    return new User(userData.id, userData.name, userData.email)
-  }
-}
-```
-
----
-
-## 4. **Framework & Drivers Layer** (`/routes`, `index.ts`)
-
-- Connects HTTP layer, frameworks, databases to your system
-- Express app, environment setup, dependency injection, etc.
-
-### 📄 `UserController.ts`
-
-```ts
-import { Request, Response } from 'express'
-import { CreateUserUseCase } from '../../application/CreateUserUseCase'
-
-export class UserController {
-  constructor(private createUserUseCase: CreateUserUseCase) {}
-
-  async create(req: Request, res: Response) {
-    try {
-      const { name, email } = req.body
-      const user = await this.createUserUseCase.execute(name, email)
-      res.status(201).json(user)
-    } catch (err: any) {
-      res.status(400).json({ error: err.message })
-    }
-  }
-}
-```
-
-### 📄 `user.routes.ts`
-
-```ts
-import { Router } from 'express'
-import { PrismaUserRepository } from '../infrastructure/PrismaUserRepository'
-import { CreateUserUseCase } from '../application/CreateUserUseCase'
-import { UserController } from './controllers/UserController'
-
-const repo = new PrismaUserRepository()
-const useCase = new CreateUserUseCase(repo)
-const controller = new UserController(useCase)
-
-const router = Router()
-router.post('/users', controller.create.bind(controller))
-
-export default router
-```
-
-### 📄 `index.ts`
-
-```ts
-import express from 'express'
-import userRoutes from './routes/user.routes'
-
-const app = express()
-app.use(express.json())
-app.use('/api', userRoutes)
-
-app.listen(3000, () => console.log('Server running on port 3000'))
-```
-
----
-
-## ✅ Benefits of This Structure
-
-| Benefit                       | Description                                                   |
-| ----------------------------- | ------------------------------------------------------------- |
-| 💡 Testable                   | You can test use cases without touching DB or Express         |
-| 🔁 Replaceable Infrastructure | Switch from Prisma to Mongoose without touching use case code |
-| 🔒 Domain Protection          | Domain rules (e.g. valid email) are always enforced           |
-| 🧼 Separation of Concerns     | Each layer has a clear, single responsibility                 |
-
----
-
-## 📦 Folder Structure Summary
-
-```c
+``` python
 src/
-├── domain/
-│   └── User.ts
-├── application/
-│   ├── CreateUserUseCase.ts
-│   └── IUserRepository.ts
-├── infrastructure/
-│   └── PrismaUserRepository.ts
-├── routes/
-│   ├── controllers/
-│   │   └── UserController.ts
-│   └── user.routes.ts
-└── index.ts
+├── domain/                           # 💡 Pure business logic (no external dependencies)
+│   ├── entities/                     #   - Core domain models (e.g., User, Token)
+│   ├── interfaces/                   #   - Interfaces/ports like IUserRepository
+│   └── services/                     #   - Business service interfaces (e.g., ITokenService)
+│
+├── application/                      # 🧠 Application-specific logic (orchestration)
+│   ├── usecases/                     #   - Use cases (e.g., SignUpUseCase, LoginUseCase)
+│   ├── DTO/                          #   - Data Transfer Objects used in and out of use cases
+│   └── validation/                   #   - Input validation logic (e.g., Zod schemas)
+│
+├── infrastructure/                  # ⚙️ External tech implementations (adapters)
+│   ├── repositories/                 #   - DB implementations of repository interfaces (e.g., PrismaUserRepo)
+│   ├── services/                     #   - Services like JWT, Bcrypt implementing domain interfaces
+│   └── http/
+│       ├── middleware/              #     - Middleware (e.g., auth checks, error handlers)
+│       └── config/                  #     - Config files (e.g., passport, env setup, Prisma)
+│
+├── presentation/                    # 🌐 Web interface layer (Express)
+│   ├── controllers/                 #   - Controllers that call use cases (e.g., AuthController)
+│   ├── routes/                      #   - Express routers mapping endpoints to controllers
+│   └── wiring/                      #   - Composition root: inject dependencies, wire up everything
+│
+└── index.ts                         # 🚪 Entry point of the application (Express app bootstrap)
+
+
 ```
 
 ---
 
-Would you like a repo scaffold or starter template based on this?
+## 🛠️ Tech Stack
+
+| Tool/Library      | Purpose                          |
+| ----------------- | -------------------------------- |
+| **Node.js**       | Runtime                          |
+| **TypeScript**    | Type safety                      |
+| **Express.js**    | HTTP server                      |
+| **Passport.js**   | OAuth 2.0 Strategy               |
+| **Prisma**        | Database ORM                     |
+| **Zod**           | Input validation                 |
+| **JWT**           | Token-based authentication       |
+| **Bcrypt**        | Password hashing                 |
+| **ESLint + Prettier** | Code quality and formatting |
+
+---
+
+## ⚙️ Scripts
+
+| Script        | Description                          |
+| ------------- | ------------------------------------ |
+| `npm run dev` | Run the server in development mode   |
+| `npm run build` | Compile TypeScript to JavaScript   |
+| `npm start`   | Run compiled JS from `dist/`         |
+| `npm run lint`| Run ESLint                          |
+| `npm run format`| Auto-format code using Prettier    |
+| `npm run push`| Push Prisma schema to DB             |
+| `npm run generate`| Generate Prisma client            |
+
+---
+
+## 🔐 Auth Flow (Google OAuth Example)
+
+1. User hits `/auth/google`
+2. Redirects to Google Consent Screen
+3. Google sends back user profile
+4. If user doesn't exist: create one
+5. Generate and return `accessToken` and `refreshToken`
+
+---
+
+## ✅ Benefits of This Architecture
+
+- 🔁 Easily swap out Passport, Prisma, etc. without touching business logic
+- 🧪 Use cases are unit testable without mocks for Express or DB
+- 🔒 Keeps domain rules (e.g., valid email) protected at core
+- ♻️ Clean separation of concerns
+
+---
+
+## 📌 To Do
+
+- [ ]  Add GitHub OAuth 2.0
+- [✅] Implemented Clean Architecture
+- [✅] Add logout and token revocation
+- [ ]  Add unit and integration tests
+- [ ]  Rate limiting and throttling
+
+---
+
+## 🧑‍💻 Author
+
+Made with ❤️ by [hello-ship-code](https://github.com/hello-ship-code)

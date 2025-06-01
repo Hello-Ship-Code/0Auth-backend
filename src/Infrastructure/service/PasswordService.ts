@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { env } from '../config/env.config'
+import { env } from '../Http/config/env.config'
 import { IPasswordService } from '../../domain/service/IPasswordService'
 
 export class PasswordService implements IPasswordService {
