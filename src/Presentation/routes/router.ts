@@ -1,24 +1,27 @@
 // src/routes/app-router.ts
 import { Router, type Response, type Express } from 'express'
-import { loginController } from '../controllers/login.controller'
-import { signupController } from '../controllers/signup.controller'
-import { userController } from '../controllers/users.controllers'
+
 import { authMiddleware } from '../../Infrastructure/Http/middlewares/auth.middleware'
-import { userDetails } from '../controllers/userDetails.controller'
 import { refreshHandler } from '../wiring/refreshToken.controller.wiring'
+import { loginHandler } from '../wiring/login.controller.wiring'
+import { signupHandler } from '../wiring/signup.controller.wiring'
+import { getUserProfileHandler } from '../wiring/getUserProfile.wiring'
+import { tokenService } from '../wiring/tokenService.wiring'
+
 //  import { googleRouter } from './google.router'
 
+const middleware = authMiddleware(tokenService)
 const protectedRoutes = Router()
-protectedRoutes.get('/profile', userDetails)
+protectedRoutes.get('/profile', getUserProfileHandler)
 
 const apiRouters = Router()
-apiRouters.get('/users', userController)
+// apiRouters.get('/users',)
 apiRouters.post('/refresh-token', refreshHandler)
-apiRouters.post('/signup', signupController)
-apiRouters.post('/login', loginController)
+apiRouters.post('/signup', signupHandler)
+apiRouters.post('/login', loginHandler)
 
 const appRouter = (app: Express) => {
-  app.use('/user', authMiddleware, protectedRoutes)
+  app.use('/user', middleware, protectedRoutes)
   // app.use('/auth', googleRouter)
   app.use('/api', apiRouters)
 

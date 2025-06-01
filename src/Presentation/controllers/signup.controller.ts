@@ -1,45 +1,35 @@
-import type { Request, RequestHandler, Response } from 'express'
-import { ZodError } from 'zod'
-
-import { userValidation } from '../../validation/user/userValidation'
-
-import HttpError from '../../utils/HttpError'
-import { userSignupTypes } from '../../utils/user/user.types'
-import { userSignup } from '../services/signup.service'
-import { generateAccessToken, generateRefreshToken } from '../../utils/JWT/JWT'
-
+import type { Request, Response, RequestHandler } from 'express'
+import { SignUpUseCase } from '../../application/usecases/SignUpUseCase'
+import { userValidation } from '../../application/Validation/user/userValidation'
 import { env } from '../../Infrastructure/config/env.config'
-import { updateRefreshToken } from '../services/updateRefreshToken.service'
+import { ZodError } from 'zod'
+import HttpError from '../../Infrastructure/Http/middlewares/HttpError'
 
-export const signupController: RequestHandler = async (req: Request, res: Response) => {
-  try {
-    const { email, userName, password } = userValidation.parse(req.body as userSignupTypes)
+export const signupController = (signUseCase: SignUpUseCase): RequestHandler => {
+  return async (req: Request, res: Response) => {
+    try {
+      const { email, password, userName } = userValidation.parse(req.body)
 
-    const user = await userSignup({ email, userName, password })
+      const { accessToken, refreshToken } = await signUseCase.execute({ email, password, userName })
 
-    const access_token = generateAccessToken(user)
-    const refreshToken = generateRefreshToken(user)
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
 
-    updateRefreshToken(refreshToken, user.id)
+      res.status(201).json({ accessToken: accessToken })
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const errors = error.errors.map((e) => `${e.path.join('.')}: ${e.message}`)
+        res.status(400).json({ message: errors.join(', ') })
+        return
+      }
 
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      secure: env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    })
-
-    res.json({ access_token: access_token })
-  } catch (error) {
-    if (error instanceof ZodError) {
-      const errors = error.errors.map((e) => `${e.path.join('.')} : ${e.message}`)
-      res.status(400).json({ message: errors.join(', ') })
-      return
+      const status = error instanceof HttpError ? error.statusCode : 500
+      const message = error instanceof Error ? error.message : 'Something went wrong'
+      res.status(status).json({ message })
     }
-
-    const status = error instanceof HttpError ? error.statusCode : 500
-    const message = error instanceof Error ? error.message : 'Something went wrong'
-
-    res.status(status).json({ message })
   }
 }
