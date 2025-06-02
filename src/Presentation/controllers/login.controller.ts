@@ -23,8 +23,8 @@ export const loginController = (loginUseCase: LoginUseCase): RequestHandler => {
 
       const { accessToken, refreshToken } = await loginUseCase.execute({ email, password })
 
-      console.log('from Login Controller', refreshToken)
-      console.log('from Login Controller:', env.NODE_ENV === 'production')
+      // console.log('from Login Controller', refreshToken)
+      // console.log('from Login Controller:', env.NODE_ENV === 'production')
 
       // Set refresh token in cookie
       res.cookie('refreshToken', refreshToken, {
