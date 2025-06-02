@@ -35,6 +35,7 @@ export class LoginUseCase {
     )
 
     await this.refreshTokenRepo.createToken(refreshTokenString)
+
     return {
       accessToken,
       refreshToken,
