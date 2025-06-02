@@ -1,3 +1,4 @@
+import { getRefreshTokenExpiryMs } from './../../infrastructure/utils/tokenExpiry'
 import type { Request, Response, RequestHandler } from 'express'
 import { LoginDTO } from '../../application/DTO/LoginDTO'
 import { env } from '../../infrastructure/Http/config/env.config'
@@ -22,15 +23,18 @@ export const loginController = (loginUseCase: LoginUseCase): RequestHandler => {
 
       const { accessToken, refreshToken } = await loginUseCase.execute({ email, password })
 
+      console.log('from Login Controller', refreshToken)
+      console.log('from Login Controller:', env.NODE_ENV === 'production')
+
       // Set refresh token in cookie
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
+        httpOnly: env.NODE_ENV === 'production',
         secure: env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: getRefreshTokenExpiryMs(),
       })
 
-      res.status(200).json({ access_token: accessToken })
+      res.status(200).json({ access_token: accessToken, refreshToken: refreshToken })
     } catch (error: unknown) {
       const status = error instanceof HttpError ? error.statusCode : 500
       const message = error instanceof Error ? error.message : 'Something went wrong'
