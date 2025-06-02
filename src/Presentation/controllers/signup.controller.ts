@@ -1,9 +1,9 @@
 import type { Request, Response, RequestHandler } from 'express'
 import { SignUpUseCase } from '../../application/usecases/SignUpUseCase'
 import { userValidation } from '../../application/Validation/user/userValidation'
-import { env } from '../../Infrastructure/Http/config/env.config'
+import { env } from '../../infrastructure/Http/config/env.config'
 import { ZodError } from 'zod'
-import HttpError from '../../Infrastructure/Http/middlewares/HttpError'
+import HttpError from '../../infrastructure/Http/middlewares/HttpError'
 
 export const signupController = (signUseCase: SignUpUseCase): RequestHandler => {
   return async (req: Request, res: Response) => {

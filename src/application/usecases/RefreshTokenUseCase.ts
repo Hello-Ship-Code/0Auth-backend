@@ -3,6 +3,7 @@ import { IRefreshTokenRepository } from '../../domain/interface/IRefreshTokenRep
 import { IUserRepository } from '../../domain/interface/IUserRepository'
 import { ITokenService } from '../../domain/service/ITokenService'
 import { AuthTokenDTO } from '../DTO/AuthTokenDTO'
+import { getRefreshTokenExpiryDate } from '../../infrastructure/utils/tokenExpiry'
 
 export class RefreshTokenUseCase {
   constructor(
@@ -32,7 +33,7 @@ export class RefreshTokenUseCase {
       userId,
       newRefreshTokenString,
       new Date(),
-      new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      getRefreshTokenExpiryDate(),
     )
 
     await this.refreshTokenRepo.createToken(newRefreshToken)

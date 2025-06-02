@@ -1,7 +1,7 @@
 import { RefreshTokenUseCase } from '../../application/usecases/RefreshTokenUseCase'
-import { RefreshTokenRepository } from '../../Infrastructure/Repositories/RefreshTokenRepository'
-import { UserRepository } from '../../Infrastructure/Repositories/UserRepository'
-import { TokenService } from '../../Infrastructure/service/TokenService'
+import { RefreshTokenRepository } from '../../infrastructure/Repositories/RefreshTokenRepository'
+import { UserRepository } from '../../infrastructure/Repositories/UserRepository'
+import { TokenService } from '../../infrastructure/service/TokenService'
 import { refreshTokenController } from '../controllers/refreshToken.controller'
 
 const tokenService = new TokenService()

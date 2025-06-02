@@ -1,6 +1,6 @@
 import type { RequestHandler, Request, Response } from 'express'
-import { GetUserProfileUseCase } from './../../application/usecases/GetUserProfileUseCase'
-import HttpError from '../../Infrastructure/Http/middlewares/HttpError'
+import { GetUserProfileUseCase } from '../../application/usecases/GetUserProfileUseCase'
+import HttpError from '../../infrastructure/Http/middlewares/HttpError'
 
 export const getUserDetailsController = (
   getUserProfileUseCase: GetUserProfileUseCase,

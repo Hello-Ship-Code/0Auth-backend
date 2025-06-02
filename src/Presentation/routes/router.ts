@@ -1,7 +1,7 @@
 // src/routes/app-router.ts
 import { Router, type Response, type Express } from 'express'
 
-import { authMiddleware } from '../../Infrastructure/Http/middlewares/auth.middleware'
+import { authMiddleware } from '../../infrastructure/Http/middlewares/auth.middleware'
 import { refreshHandler } from '../wiring/refreshToken.controller.wiring'
 import { loginHandler } from '../wiring/login.controller.wiring'
 import { signupHandler } from '../wiring/signup.controller.wiring'

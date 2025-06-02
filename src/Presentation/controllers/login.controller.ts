@@ -1,8 +1,8 @@
 import type { Request, Response, RequestHandler } from 'express'
 import { LoginDTO } from '../../application/DTO/LoginDTO'
-import { env } from '../../Infrastructure/Http/config/env.config'
+import { env } from '../../infrastructure/Http/config/env.config'
 import { LoginUseCase } from '../../application/usecases/LoginUseCase'
-import HttpError from '../../Infrastructure/Http/middlewares/HttpError'
+import HttpError from '../../infrastructure/Http/middlewares/HttpError'
 
 export const loginController = (loginUseCase: LoginUseCase): RequestHandler => {
   return async (req: Request, res: Response) => {

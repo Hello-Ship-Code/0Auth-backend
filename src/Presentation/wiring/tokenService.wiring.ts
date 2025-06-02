@@ -1,3 +1,3 @@
-import { TokenService } from '../../Infrastructure/service/TokenService'
+import { TokenService } from '../../infrastructure/service/TokenService'
 
 export const tokenService = new TokenService()

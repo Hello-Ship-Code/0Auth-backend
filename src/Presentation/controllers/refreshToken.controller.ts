@@ -1,6 +1,6 @@
 import type { Request, Response, RequestHandler } from 'express'
 import { RefreshTokenUseCase } from '../../application/usecases/RefreshTokenUseCase'
-import HttpError from '../../Infrastructure/Http/middlewares/HttpError'
+import HttpError from '../../infrastructure/Http/middlewares/HttpError'
 
 export const refreshTokenController = (
   refreshTokenUsecase: RefreshTokenUseCase,
