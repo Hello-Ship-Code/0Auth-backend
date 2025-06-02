@@ -9,9 +9,8 @@ const env = {
     process.env.REFRESH_TOKEN_SECRET ?? 'a-string-secret-at-least-256-bits-longs',
   SALTROUNDS: Number(process.env.SALTROUNDS ?? 10),
   NODE_ENV: process.env.NODE_ENV ?? 'development',
-  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-  SESSION_SECRET: process.env.SESSION_SECRET,
+  // GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  // GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   CLIENT_ORIGIN: process.env.CLIENT_ORIGIN,
   SERVER_ORIGIN: process.env.SERVER_ORIGIN,
   ACCESS_TOKEN_SECRET:

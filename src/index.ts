@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import passport from 'passport'
+
 import cookieParser from 'cookie-parser'
 
 import { env } from './infrastructure/Http/config/env.config'
@@ -12,7 +12,6 @@ app.use(cors({ origin: env.CLIENT_ORIGIN, credentials: true }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(passport.initialize())
 
 appRouter(app)
 
