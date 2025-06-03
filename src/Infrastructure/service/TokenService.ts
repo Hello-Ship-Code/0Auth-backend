@@ -4,7 +4,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 
 export class TokenService implements ITokenService {
   generateAccessToken(payload: object): string {
-    const expiresIn = env.NODE_ENV === 'production' ? '15m' : '1m'
+    const expiresIn = env.NODE_ENV === 'production' ? '15m' : '3m'
     return jwt.sign(payload, env.ACCESS_TOKEN_SECRET, { expiresIn })
   }
 
@@ -21,7 +21,7 @@ export class TokenService implements ITokenService {
   }
 
   generateRefreshToken(payload: { userId: string }): string {
-    const expiresIn = env.NODE_ENV === 'production' ? '7d' : '1m'
+    const expiresIn = env.NODE_ENV === 'production' ? '7d' : '5m'
     return jwt.sign(payload, env.REFRESH_TOKEN_SECRET, { expiresIn })
   }
 

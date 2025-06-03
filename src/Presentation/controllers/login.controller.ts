@@ -28,13 +28,13 @@ export const loginController = (loginUseCase: LoginUseCase): RequestHandler => {
 
       // Set refresh token in cookie
       res.cookie('refreshToken', refreshToken, {
-        httpOnly: env.NODE_ENV === 'production',
+        httpOnly: true,
         secure: env.NODE_ENV === 'production',
         sameSite: 'strict',
         maxAge: getRefreshTokenExpiryMs(),
       })
 
-      res.status(200).json({ access_token: accessToken, refreshToken: refreshToken })
+      res.status(200).json({ access_token: accessToken })
     } catch (error: unknown) {
       const status = error instanceof HttpError ? error.statusCode : 500
       const message = error instanceof Error ? error.message : 'Something went wrong'

@@ -4,6 +4,7 @@ import { userValidation } from '../../application/Validation/user/userValidation
 import { env } from '../../infrastructure/Http/config/env.config'
 import { ZodError } from 'zod'
 import HttpError from '../../infrastructure/Http/middlewares/HttpError'
+import { getRefreshTokenExpiryMs } from '../../infrastructure/utils/tokenExpiry'
 
 export const signupController = (signUseCase: SignUpUseCase): RequestHandler => {
   return async (req: Request, res: Response) => {
@@ -16,7 +17,7 @@ export const signupController = (signUseCase: SignUpUseCase): RequestHandler => 
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        maxAge: getRefreshTokenExpiryMs(),
       })
 
       res.status(201).json({ accessToken: accessToken })

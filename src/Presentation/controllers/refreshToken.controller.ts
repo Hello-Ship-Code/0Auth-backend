@@ -8,7 +8,7 @@ export const refreshTokenController = (
   return async (req: Request, res: Response) => {
     try {
       const token = req.cookies.refreshToken
-      console.log('\nfrom RefreshToken Controller', token)
+      // console.log('\nfrom RefreshToken Controller', token)
       if (!token) {
         throw new HttpError('No refresh Token', 402)
       }
