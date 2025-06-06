@@ -7,12 +7,15 @@ import { loginHandler } from '../wiring/login.controller.wiring'
 import { signupHandler } from '../wiring/signup.controller.wiring'
 import { getUserProfileHandler } from '../wiring/getUserProfile.wiring'
 import { tokenService } from '../wiring/tokenService.wiring'
+import { logoutHandler } from '../wiring/logout.wiring'
 
-//  import { googleRouter } from './google.router'
+
 
 const middleware = authMiddleware(tokenService)
+
 const protectedRoutes = Router()
 protectedRoutes.get('/profile', getUserProfileHandler)
+protectedRoutes.post('/logout', logoutHandler)
 
 const apiRouters = Router()
 // apiRouters.get('/users',)

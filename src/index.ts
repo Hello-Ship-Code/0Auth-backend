@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 
 import { env } from './infrastructure/Http/config/env.config'
 import { appRouter } from './presentation/routes/router'
+import { errorHandler } from './infrastructure/Http/middlewares/error.handler'
 
 const app = express()
 
@@ -12,6 +13,7 @@ app.use(cors({ origin: env.CLIENT_ORIGIN, credentials: true }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
+app.use(errorHandler)
 
 appRouter(app)
 
