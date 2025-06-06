@@ -6,6 +6,7 @@ export const logoutController = (logoutUsecase: LogoutUseCase) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const refreshToken = req.cookies?.refreshToken
+
       if (!refreshToken) throw new HttpError('Refresh token is missing', 404)
       await logoutUsecase.execute(refreshToken)
       res.clearCookie('refreshToken', {
