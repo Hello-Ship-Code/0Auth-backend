@@ -33,6 +33,8 @@ export const loginController = (loginUseCase: LoginUseCase): RequestHandler => {
         sameSite: 'strict',
         maxAge: getRefreshTokenExpiryMs(),
       })
+      const userAgent = req.headers['user-agent']
+      console.log('User-Agent:', userAgent)
 
       res.status(200).json({ access_token: accessToken })
     } catch (error: unknown) {
