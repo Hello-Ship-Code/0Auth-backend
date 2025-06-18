@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import crypto from 'crypto'
 
 import cookieParser from 'cookie-parser'
 
@@ -14,6 +15,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(errorHandler)
+
+console.log(crypto.randomBytes(32).toString('hex'))
 
 appRouter(app)
 
